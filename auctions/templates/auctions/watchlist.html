@@ -1,0 +1,36 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}Watchlist{% endblock %}
+
+{% block body %}
+    <h2>Watchlist</h2>
+
+    <div>
+        <ul class="list-group">
+            {% for watchlist in watchlists %}
+                    <li class="list-group-item">
+                        <div class="listing_elements">
+                            {% if watchlist.item.image_url %}
+                                <img class="listing_image" src="{{watchlist.item.image_url}}">
+                            {% else %}
+                                <img class="listing_image" src="https://media.istockphoto.com/vectors/no-image-available-sign-vector-id922962354?k=6&m=922962354&s=612x612&w=0&h=_KKNzEwxMkutv-DtQ4f54yA5nc39Ojb_KPvoV__aHyU=">
+                            {% endif %}
+                            <div>
+                                <h4>{{ watchlist.item.title }}</h4>
+                                <h6>{{ watchlist.item.description }}</h6>
+                                {% if watchlist.item.concretized %}
+                                    <div class="alert alert-danger" role="alert">
+                                        <b>Concretized auction</b>
+                                    </div>
+                                {% else %}
+                                    <h6><b>Price:</b> {{ watchlist.item.starting_bit }} $</h6>
+                                {% endif %}
+                                
+                                <a href="{% url 'listing' watchlist.item.title %}" class="btn btn-primary" style="color: white">Visit item</a>
+                            </div>
+                        </div>
+                    </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

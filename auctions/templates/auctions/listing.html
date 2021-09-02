@@ -1,0 +1,117 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}Listing{% endblock %}
+
+{% block body %}
+    <div class="listing_elements">
+        {% if element.image_url %}
+            <img class="bit_item" src="{{element.image_url}}">
+        {% else %}
+            <img class="bit_item" src="https://media.istockphoto.com/vectors/no-image-available-sign-vector-id922962354?k=6&m=922962354&s=612x612&w=0&h=_KKNzEwxMkutv-DtQ4f54yA5nc39Ojb_KPvoV__aHyU=">
+        {% endif %}
+        <div class="listing_text">
+            <h4 class="listing_title">{{ element.title }}</h4>
+            <h6 class="listing_description">{{ element.description }}</h6>
+
+            <h6><b>Details:</b></h6>
+            <ul>
+                <li>Listed by: {{element.user}} </li>
+                <li>Category: {{element.category}}  </li>
+                <li>Created: {{element.date}}</li>
+            </ul>
+            {% if not element.concretized %}
+                <form action="{% url 'place_bid' element.title %}" class="listing_auction" method="POST">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <div class="col-3">
+                            <h5 style="margin-left: 2rem">Current bid:</h5>
+                        </div>
+                        <div class="col">
+                            <h5><b>{{ actual_bid.bid }} $</b></h5>
+                        </div>
+                        <div class="col">
+                            <h5>[{{ actual_bid.number_bids }}] bids</h5>
+                        </div>
+                    </div>
+                    {% if user.is_authenticated %}
+                        <div class="form-row">
+                            <div class="col-3">
+                            </div>
+                            <div class="col">
+                                <input type="number" name="user_bid" class="form-control" step="0.1" placeholder="Write your offer" required>
+                            </div>
+                            <div class="col">
+                                <button type="submit" class="btn btn-primary mb-2">Place bid</button>
+                            </div>
+                        </div>
+                    {% endif %}
+                </form>
+                {% if not user.is_authenticated %}
+                    <div class="alert alert-warning" style="margin-right: 1rem;" role="alert">
+                        You must first log in if you want to bid
+                    </div>
+                {% endif %}
+                {% if message %}
+                    <div class="alert alert-danger" style="margin-right: 1rem;" role="alert">
+                        {{ message }}
+                    </div>
+                {% endif %}
+
+                    {% if user.is_authenticated %}
+                        {% if user_watchlist %}
+                            <a href="{% url 'delete_watchlist' element.title %}" style="margin-top: 1rem" class="btn btn-primary">Delete from watchlist</a>
+                        {% else %}
+                            <a href="{% url 'add_watchlist' element.title %}" style="margin-top: 1rem" class="btn btn-primary">Add to watchlist</a>
+                        {% endif %}
+                    {% endif %}
+                    
+                    
+                    {% if user == element.user %}
+                        <a href="{% url 'concretized' element.title %}" style="margin-top: 1rem; color: white" class="btn btn-danger">End auction</a>
+                    {% endif %}
+            {% else %}
+
+                {% if user == actual_bid.buyer %}
+                    <div class="alert alert-success" role="alert">
+                        <b>You won this auctions</b>
+                    </div>
+                {% else %}
+                    <div class="alert alert-danger" role="alert">
+                        <b>Concretized auction</b>
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+
+    
+        <h2>Comments</h2>
+        {% if not comments %}
+            <li class="list-group-item">
+                <div>
+                    No comment exist
+                </div>
+            </li>
+        {% else %}
+            {% for comment in comments %}
+                <li class="list-group-item">
+                    
+                    <div style="margin-bottom: 1rem;"><h6 style="font-size: 0.7rem;">Commented by: <span style="color: blue; margin-bottom: 1rem"><b>{{comment.user}}</b></h6></span></div>
+                    <p>&emsp;{{comment.user_comment}}</p>
+                </li>
+            {% endfor %}
+        {% endif %}
+    {% if user.is_authenticated %}
+        {% if not element.concretized %}    
+            <form action="{% url 'comment' element.title %}" method="POST">
+                {% csrf_token %}
+                <textarea name="comment" style="width: calc(100% - 2rem); margin: 1rem" placeholder="Add your comment here" class="form-control" rows="3"></textarea>
+                <button style="margin: 1rem;" type="submit" class="btn btn-primary mb-2">Post your comment</button>
+            </form>
+        {% endif %}
+    {% else %}
+        <div class="alert alert-warning" role="alert">
+            You must first log in if you want to post a comment.
+        </div>
+    {% endif %}
+{% endblock %}

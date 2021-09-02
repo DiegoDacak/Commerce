@@ -1,0 +1,30 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}Active listing{% endblock %}
+
+{% block body %}
+    <h2>Active Listings</h2>
+    <div>
+        <ul class="list-group">
+            {% for listing in listings %}
+                {% if not listing.concretized %}
+                    <li class="list-group-item">
+                        <div class="listing_elements">
+                            {% if listing.image_url != "null"%}
+                                <img class="listing_image" src="{{listing.image_url}}">
+                            {% else %}
+                                <img class="listing_image" src="https://media.istockphoto.com/vectors/no-image-available-sign-vector-id922962354?k=6&m=922962354&s=612x612&w=0&h=_KKNzEwxMkutv-DtQ4f54yA5nc39Ojb_KPvoV__aHyU=">
+                            {% endif %}
+                            <div>
+                                <h4>{{ listing.title }}</h4>
+                                <h6>{{ listing.description }}</h6>
+                                <h6><b>Initial price:</b> {{ listing.starting_bit }} $</h6>
+                                <a href="{% url 'listing' listing.title %}" class="btn btn-primary" style="color: white">Visit item</a>
+                            </div>
+                        </div>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

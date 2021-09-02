@@ -1,0 +1,45 @@
+.forma {
+    width: 70%;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.listing_elements {
+    display: flex;
+}
+
+.listing_image {
+    width: 10rem;
+    height: 10rem;
+    margin-right: 1rem;
+}
+
+.listing_text {
+    width: calc(100% - 12rem)
+}
+
+.bit_item {
+    width: 25rem;
+    height: 25rem;
+    margin-right: 1rem;
+    margin-left: 1rem;
+}
+
+.listing_title {
+    margin: 1rem;
+    text-align: center;
+    font-family: 'Black Ops One', cursive;
+    color: #0F0A8C;
+}
+
+.listing_description {
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+}
+
+.listing_auction {
+    margin-right: 1rem;
+    background-color: #D3D3D4;
+}

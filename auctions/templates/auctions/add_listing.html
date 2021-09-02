@@ -1,0 +1,36 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}Create listing{% endblock %}
+
+{% block body %}
+    <form class="forma" method="post">
+        {% csrf_token %}
+        <div class="form-group">    
+            <label>Title:*</label>
+            <input name="title" autocomplete="off" class="form-control" placeholder="Add title" required>
+        </div>
+        <div class="form-group">
+            <label>Starting bit:*</label>
+            <input name="starting_bit" autocomplete="off" type="number" step="0.1" class="form-control"  min="0" placeholder="Add a starting bit">
+        </div>
+        <div class="form-group">
+            <label>Image URL:</label>
+            <input name="image_url" class="form-control" autocomplete="off" placeholder="Paste the url image here (optional)">
+        </div>
+        <div class="form-group">
+            <label>Description:*</label>
+            <textarea name="description" class="form-control" rows="3" placeholder="Add a description" required></textarea>
+        </div>
+        <div class="form-group">
+            <label>Category:</label>
+            <select name="category" class="form-select border rounded border-dark">
+                <option selected disabled>Select a category (optional)</option>
+                {% for category in categories %}
+                
+                    <option value={{category}}>{{ category }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+{% endblock %}
